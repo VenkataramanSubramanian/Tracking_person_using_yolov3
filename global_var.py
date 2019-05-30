@@ -12,31 +12,6 @@ from ctypes import *
 track_points={}
 pixel_displacement_value=75
 
-#The below code are the functions that load the darknet for yolo prediction of the image
-def classify(net, meta, im):
-    out = predict_image(net, im)
-    res = []
-    for i in range(meta.classes):
-        res.append((meta.names[i], out[i]))
-    res = sorted(res, key=lambda x: -x[1])
-    return res
-
-
-def sample(probs):
-    s = sum(probs)
-    probs = [a/s for a in probs]
-    r = random.uniform(0, 1)
-    for i in range(len(probs)):
-        r = r - probs[i]
-        if r <= 0:
-            return i
-    return len(probs)-1
-
-def c_array(ctype, values):
-    arr = (ctype*len(values))()
-    arr[:] = values
-    return arr
-
 class BOX(Structure):
     _fields_ = [("x", c_float),
                 ("y", c_float),
